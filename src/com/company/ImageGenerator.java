@@ -16,6 +16,7 @@ public class ImageGenerator {
         // Get random string from method getString below
         String text = getString();
 
+
         // Create image showing the string generated, to prevent the ability to copy/paste the string
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
@@ -30,7 +31,7 @@ public class ImageGenerator {
         g2d = img.createGraphics();
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(getRandomColor());
         g2d.drawString(text, 0, fm.getAscent());
         g2d.dispose();
         try {
@@ -40,7 +41,7 @@ public class ImageGenerator {
         }
 
         try {
-            popup(text);
+            displayGUI(text);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +60,16 @@ public class ImageGenerator {
         return generatedCaptcha;
     }
 
-    public static void popup(String text) throws IOException {
+    public Color getRandomColor() {
+        Random random = new Random();
+        float r = random.nextFloat();
+        float g = random.nextFloat();
+        float b = random.nextFloat();
+        return new Color(r, g, b);
+    }
+
+
+    public static void displayGUI(String text) throws IOException {
         GUI graphicInterface = new GUI();
         graphicInterface.display(text);
     }
