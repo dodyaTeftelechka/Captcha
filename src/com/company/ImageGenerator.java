@@ -1,10 +1,10 @@
 package com.company;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+
+import java.awt.*;
+import java.awt.color.ColorSpace;
+import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -28,12 +28,18 @@ public class ImageGenerator {
         g2d.dispose();
 
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
         g2d = img.createGraphics();
         g2d.setFont(font);
         fm = g2d.getFontMetrics();
         g2d.setColor(getRandomColor());
         g2d.drawString(text, 0, fm.getAscent());
         g2d.dispose();
+
+        doImage(img, text);
+    }
+
+    public static void doImage(BufferedImage img, String text) {
         try {
             ImageIO.write(img, "png", new File("Text.png"));
         } catch (IOException ex) {
@@ -46,6 +52,7 @@ public class ImageGenerator {
             e.printStackTrace();
         }
     }
+
 
     // Generates random string from the characters in CHARS
     public String getString() {
@@ -69,9 +76,22 @@ public class ImageGenerator {
     }
 
 
-
     public static void displayGUI(String text) throws IOException {
         GUI graphicInterface = new GUI();
         graphicInterface.display(text);
+    }
+
+    public void editImage(BufferedImage img) throws IOException {
+        WritableRaster wr = img.getRaster();
+        int width = img.getWidth();
+        int height = img.getHeight();
+
+        for (int ii = 0; ii < width; ii++) {
+            for (int jj = 0; jj < height; jj++) {
+                int color = img.getRGB(ii, jj);
+                wr.setSample(ii, jj, 0, 156);
+            }
+            ImageIO.write(img, "BMP", new File("Text.png"));
+        }
     }
 }

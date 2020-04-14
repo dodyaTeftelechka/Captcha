@@ -34,8 +34,6 @@ public class GUI {
     static JLabel loadedImage = new JLabel(new ImageIcon(image));
 
     public static void display(String captcha) throws IOException {
-
-
         // Adding GUI components to panel
         checkInfo(captcha);
         panel.add(lblCaptcha);
