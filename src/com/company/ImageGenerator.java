@@ -31,12 +31,19 @@ public class ImageGenerator {
     }
 
     public static void doImage(BufferedImage img, String text) {
+        newImage(img, text);
+        tryToDisplayGUI(text);
+    }
+
+    public static void newImage(BufferedImage img, String text){
         try {
             ImageIO.write(img, "png", new File("Text.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
 
+    public static void tryToDisplayGUI(String text){
         try {
             displayGUI(text);
         } catch (IOException e) {
@@ -54,7 +61,7 @@ public class ImageGenerator {
     }
 
 
-    public String getString() {
+    public static String getString() {
         String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder str = new StringBuilder();
         Random rnd = new Random();
@@ -62,13 +69,11 @@ public class ImageGenerator {
             int index = (int) (rnd.nextFloat() * CHARS.length());
 
             str.append(CHARS.charAt(index));
-
-
         }
         return str.toString();
     }
 
-    public Color getRandomColor() {
+    public static Color getRandomColor() {
         Random random = new Random();
         float r = random.nextFloat();
         float g = random.nextFloat();
@@ -101,7 +106,7 @@ public class ImageGenerator {
         }
     }
 
-    public void Generate() throws IOException {
+    public static void Generate() throws IOException {
             String text = getString();
             BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = img.createGraphics();
@@ -118,4 +123,22 @@ public class ImageGenerator {
             g2d.dispose();
             doImage(img, text);
     }
+
+    public static void GenerateAgain() throws IOException {
+        String text = getString();
+        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = img.createGraphics();
+        //setRandomFont(g2d);
+        FontMetrics fm = g2d.getFontMetrics();
+        int width = fm.stringWidth(text);
+        int height = fm.getHeight();
+        g2d.dispose();
+        img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        g2d = img.createGraphics();
+        fm = g2d.getFontMetrics();
+        g2d.setColor(getRandomColor());
+        g2d.drawString(text, 0, fm.getAscent());
+        g2d.dispose();
+    }
+
 }

@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JPanel;
 
+
 public class GUI {
 
     public static ImageGenerator imageGenerator = new ImageGenerator();
@@ -34,6 +35,7 @@ public class GUI {
 
     static JLabel loadedImage = new JLabel(new ImageIcon(image));
 
+
     public static void display(String captcha) throws IOException {
         checkInfo(captcha);
         panel.add(lblCaptcha);
@@ -51,18 +53,22 @@ public class GUI {
     public static void checkInfo(String captcha) {
         btnLogin.addActionListener(e -> {
             String givenCaptcha = enterCaptcha.getText();
-            Boolean correctCaptcha = captcha.equals(givenCaptcha);
-
+            boolean correctCaptcha = captcha.equals(givenCaptcha);
             if (correctCaptcha) {
                 JOptionPane.showMessageDialog(null, "Correct captcha");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                System.exit(0);
+                System.exit(0); //all right!
             } else {
-                JOptionPane.showMessageDialog(null, "Incorrect captcha, try again");
-                frame.setVisible(false);
-                panel.setVisible(false);
-
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                try {
+                    panel.removeAll();
+                    ImageGenerator.Generate();
+                    image = ImageIO.read(new File("./Text.png"));
+                    loadedImage = new JLabel(new ImageIcon(image));
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+
             }
         });
     }
